@@ -1,0 +1,72 @@
+// Astro (via Corepack-managed pnpm) + GitHub Spec Kit (via uv) + Claude Code, on top of
+// bare-devcontainer's minimal Node.js image. See ./Dockerfile for how the pieces are built.
+// Bare Dev Container images: https://github.com/bare-devcontainer/images
+// GitHub Spec Kit: https://github.com/github/spec-kit
+{
+  "name": "saigallery (Astro + Spec Kit + Claude Code)",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "remoteUser": "dev",
+  "runArgs": ["--cap-drop=ALL"],
+  // Remove "no-new-privileges" if you need to gain elevated privileges inside the container (e.g., su, sudo).
+  "securityOpt": ["no-new-privileges"],
+  "init": true,
+  // If you use VS Code, uncomment the following to open $EDITOR/$VISUAL/$GIT_EDITOR (e.g. `git commit`) in a VS Code tab:
+  // "remoteEnv": {
+  //   "VISUAL": "code --wait",
+  //   "EDITOR": "code --wait",
+  //   "GIT_EDITOR": "code --wait"
+  // },
+  "customizations": {
+    "vscode": {
+      "extensions": ["anthropic.claude-code", "astro-build.astro-vscode"]
+    }
+  },
+  // Claude Code's and Spec Kit's own installers (neither needs npm, which this image doesn't have).
+  "postCreateCommand": "curl -fsSL https://claude.ai/install.sh | bash && uv tool install specify-cli",
+  "mounts": [
+    // Persist Corepack's cache across rebuilds to avoid re-downloading package managers.
+    {
+      "source": "${devcontainerId}-node-corepack-cache",
+      "target": "/home/dev/.cache/node/corepack",
+      "type": "volume"
+    },
+    // Persist the shell history the image keeps in this directory.
+    {
+      "source": "${devcontainerId}-bash-history",
+      "target": "/home/dev/.local/state/bash",
+      "type": "volume"
+    },
+    // Persist Claude Code's login/config across rebuilds so you don't have to re-authenticate.
+    {
+      "source": "${devcontainerId}-claude-code-config",
+      "target": "/home/dev/.claude",
+      "type": "volume"
+    },
+    // Persist tool shims installed here: Claude Code's binary and uv's `specify` shim.
+    {
+      "source": "${devcontainerId}-local-bin",
+      "target": "/home/dev/.local/bin",
+      "type": "volume"
+    },
+    // Persist uv-managed Python interpreters (spec-kit needs Python 3.11+) across rebuilds.
+    {
+      "source": "${devcontainerId}-uv-python",
+      "target": "/home/dev/.local/share/uv",
+      "type": "volume"
+    },
+    // Persist uv's package/wheel download cache.
+    {
+      "source": "${devcontainerId}-uv-cache",
+      "target": "/home/dev/.cache/uv",
+      "type": "volume"
+    },
+    // Persist pnpm's content-addressable package store.
+    {
+      "source": "${devcontainerId}-pnpm-store",
+      "target": "/home/dev/.local/share/pnpm/store",
+      "type": "volume"
+    }
+  ]
+}

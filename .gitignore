@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Astro build output
+dist/
+.astro/
+
+# Environment variables
+.env
+.env.production
+
+# Editor/OS
+.DS_Store
+
+# Claude Code local settings (may contain credentials/tokens)
+.claude/settings.local.json

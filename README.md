@@ -16,6 +16,7 @@ The site is a static Astro build. The rules it follows are in the
 
 ```bash
 pnpm dev                                  # local development server
+pnpm dev:host                             # same, reachable from the host at http://localhost:4321
 SITE_URL=https://your.domain pnpm build   # production build into dist/
 pnpm preview                              # serve dist/ locally
 ```

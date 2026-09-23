@@ -9,6 +9,7 @@
   },
   "scripts": {
     "dev": "astro dev",
+    "dev:host": "ASTRO_TELEMETRY_DISABLED=1 astro dev --host 0.0.0.0 --port 4321 --ignore-lock",
     "build": "node scripts/verify-exhibits.mjs && astro build",
     "preview": "astro preview",
     "test": "vitest run tests/unit",

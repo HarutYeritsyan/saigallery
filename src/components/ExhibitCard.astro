@@ -1,0 +1,27 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import { catalogNumber, displayTitle, isPublished, pad3 } from '../lib/exhibits';
+
+interface Props {
+  entry: CollectionEntry<'exhibits'>;
+  eager?: boolean;
+}
+
+const { entry, eager = false } = Astro.props;
+if (!isPublished(entry)) throw new Error(`Exhibit ${entry.id} is not published`);
+const { image, alt } = entry.data;
+---
+
+<li class="exhibit-card">
+  <a href={`/exhibits/${pad3(catalogNumber(entry.id))}/`}>
+    <Image
+      src={image}
+      alt={alt}
+      widths={[240, 480]}
+      sizes="(min-width: 68rem) 16rem, (min-width: 48rem) 30vw, 45vw"
+      loading={eager ? 'eager' : 'lazy'}
+    />
+    <span class="card-title">{displayTitle(entry)}</span>
+  </a>
+</li>

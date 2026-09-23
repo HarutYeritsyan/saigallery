@@ -1,0 +1,23 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection } from 'astro:content';
+import ExhibitFloor from '../../components/ExhibitFloor.astro';
+import Gallery from '../../layouts/Gallery.astro';
+import { paginate, publishedInOrder } from '../../lib/exhibits';
+
+export const getStaticPaths = (async () => {
+  const pages = paginate(publishedInOrder(await getCollection('exhibits')));
+  // Page 1 lives at "/", so only pages 2..n are generated here.
+  return pages.slice(1).map((exhibits, i) => ({
+    params: { page: String(i + 2) },
+    props: { exhibits, currentPage: i + 2, totalPages: pages.length },
+  }));
+}) satisfies GetStaticPaths;
+
+const { exhibits, currentPage, totalPages } = Astro.props;
+---
+
+<Gallery title={`Gallery, page ${currentPage}`}>
+  <h1>Gallery, page {currentPage}</h1>
+  <ExhibitFloor exhibits={exhibits} currentPage={currentPage} totalPages={totalPages} />
+</Gallery>

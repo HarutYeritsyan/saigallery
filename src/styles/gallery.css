@@ -1,0 +1,99 @@
+/* Restrained museum palette. Every text/background pair below meets WCAG AA (Principle II, FR-006):
+   ink on wall ≈ 15:1, muted-ink on wall ≈ 7:1, ink on plaque ≈ 16:1, accent on wall ≈ 7.5:1. */
+:root {
+  --wall: #f4f1ec;
+  --plaque: #fbfaf7;
+  --frame: #d9d3c8;
+  --ink: #1f1d1a;
+  --muted-ink: #57524a;
+  --accent: #6b3f1f;
+  --gap: clamp(1rem, 2.5vw, 2rem);
+  --measure: 38rem;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  background: var(--wall);
+  color: var(--ink);
+  font-family: Georgia, 'Times New Roman', serif;
+  line-height: 1.55;
+}
+
+body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; }
+
+a { color: var(--accent); text-underline-offset: 0.2em; }
+a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+.site-header, .site-footer, main { width: min(72rem, 100% - 2 * var(--gap)); margin-inline: auto; }
+
+.site-header { padding-block: 2rem 1rem; border-bottom: 1px solid var(--frame); }
+.site-name {
+  font-size: 1rem; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--ink); text-decoration: none;
+}
+
+main { flex: 1; padding-block: 2.5rem 4rem; }
+
+.site-footer {
+  padding-block: 1.5rem 2.5rem; border-top: 1px solid var(--frame);
+  color: var(--muted-ink); font-size: 0.95rem;
+}
+
+h1 { font-weight: normal; font-size: clamp(1.6rem, 3vw, 2.2rem); margin: 0 0 1.5rem; }
+
+.wall-text { max-width: var(--measure); color: var(--muted-ink); font-size: 1.1rem; margin-bottom: 3rem; }
+.wall-text p { margin: 0 0 0.8rem; }
+
+.prose { max-width: var(--measure); }
+
+/* Index grid: 2 / 3 / 4 columns. */
+.exhibit-grid {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; gap: var(--gap);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@media (min-width: 48rem) { .exhibit-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 68rem) { .exhibit-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+.exhibit-card a { display: block; color: var(--ink); text-decoration: none; }
+.exhibit-card img {
+  display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover;
+  background: var(--plaque); border: 1px solid var(--frame);
+}
+.exhibit-card .card-title { display: block; margin-top: 0.6rem; font-size: 0.95rem; }
+.exhibit-card a:hover .card-title { text-decoration: underline; }
+
+.empty-state { color: var(--muted-ink); font-size: 1.15rem; max-width: var(--measure); }
+
+.pagination { margin-top: 3rem; display: flex; flex-wrap: wrap; gap: 0.75rem 1.25rem; align-items: baseline; }
+.pagination [aria-current='page'] { color: var(--ink); font-weight: bold; text-decoration: none; }
+
+/* Exhibit page. */
+.exhibit { display: grid; gap: 2rem; }
+.exhibit-figure { margin: 0; display: grid; gap: 1.5rem; }
+.exhibit-image { position: relative; background: var(--plaque); border: 1px solid var(--frame); }
+.exhibit-image img { display: block; width: 100%; height: auto; }
+.image-unavailable-notice {
+  position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%);
+}
+.exhibit-image.image-unavailable { min-height: 12rem; display: grid; place-items: center; }
+.exhibit-image.image-unavailable img { display: none; }
+.exhibit-image.image-unavailable .image-unavailable-notice {
+  position: static; width: auto; height: auto; clip-path: none; color: var(--muted-ink); padding: 2rem;
+}
+
+.plaque {
+  background: var(--plaque); border: 1px solid var(--frame); padding: 1.25rem 1.5rem;
+  max-width: var(--measure); font-size: 1.05rem;
+}
+.plaque p { margin: 0 0 0.8rem; }
+.plaque p:last-child { margin-bottom: 0; }
+
+.framing-note { color: var(--muted-ink); font-size: 0.95rem; }
+.back-link { font-size: 0.95rem; }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}

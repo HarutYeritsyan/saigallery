@@ -1,0 +1,80 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { Image } from 'astro:assets';
+import { getCollection, render } from 'astro:content';
+import Plaque from '../../components/Plaque.astro';
+import Gallery from '../../layouts/Gallery.astro';
+import {
+  catalogNumber,
+  defaultTitle,
+  displayTitle,
+  indexPageFor,
+  indexPath,
+  isPublished,
+  pad3,
+  publishedInOrder,
+} from '../../lib/exhibits';
+import { EXHIBIT_FRAMING_NOTE } from '../../lib/site';
+
+export const getStaticPaths = (async () => {
+  const all = await getCollection('exhibits');
+  const ordered = publishedInOrder(all);
+  // Drafts get no page at all; unpublished exhibits keep their URL as a "no longer available" page.
+  return all
+    .filter((entry) => entry.data.status !== 'draft')
+    .map((entry) => {
+      const number = catalogNumber(entry.id);
+      return {
+        params: { number: pad3(number) },
+        props: { entry, number, backPage: indexPageFor(number, ordered) },
+      };
+    });
+}) satisfies GetStaticPaths;
+
+const { entry, number, backPage } = Astro.props;
+const published = isPublished(entry) ? entry : undefined;
+const Caption = published ? (await render(published)).Content : undefined;
+
+// If the image fails to load, reveal the "Image unavailable" notice. This inline attribute is the
+// only script on the site (plan.md constraints); CSS alone can't detect a failed image.
+const onImageError = "this.closest('.exhibit-image').classList.add('image-unavailable')";
+---
+
+{
+  published && Caption ? (
+    <Gallery title={displayTitle(published)} kind="exhibit" image={published.data.image}>
+      <article class="exhibit">
+        <h1>{displayTitle(published)}</h1>
+        <figure class="exhibit-figure">
+          <div class="exhibit-image">
+            <Image
+              src={published.data.image}
+              alt={published.data.alt}
+              widths={[800, 1200, 1600]}
+              sizes="(min-width: 72rem) 72rem, 100vw"
+              loading="eager"
+              onerror={onImageError}
+            />
+            <p class="image-unavailable-notice">Image unavailable</p>
+          </div>
+          <Plaque>
+            <Caption />
+          </Plaque>
+        </figure>
+        <p class="framing-note">
+          {EXHIBIT_FRAMING_NOTE} <a href="/about/">About the collection</a>
+        </p>
+        <p class="back-link">
+          <a href={indexPath(backPage)}>Back to the gallery</a>
+        </p>
+      </article>
+    </Gallery>
+  ) : (
+    <Gallery title={defaultTitle(number)}>
+      <h1>{defaultTitle(number)} is no longer available.</h1>
+      <p>
+        <a href="/">Return to the gallery</a>
+      </p>
+    </Gallery>
+  )
+}

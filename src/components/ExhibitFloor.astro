@@ -1,0 +1,19 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import ExhibitCard from './ExhibitCard.astro';
+import Pagination from './Pagination.astro';
+
+interface Props {
+  exhibits: CollectionEntry<'exhibits'>[];
+  currentPage: number;
+  totalPages: number;
+}
+
+// Shared by index page 1 and pages 2..n: the grid plus explicit page links (FR-001).
+const { exhibits, currentPage, totalPages } = Astro.props;
+---
+
+<ul class="exhibit-grid">
+  {exhibits.map((entry, i) => <ExhibitCard entry={entry} eager={i < 4} />)}
+</ul>
+<Pagination currentPage={currentPage} totalPages={totalPages} />

@@ -1,0 +1,13 @@
+---
+import { getEntry, render } from 'astro:content';
+import Gallery from '../layouts/Gallery.astro';
+
+const about = await getEntry('site', 'about');
+if (!about) throw new Error('src/content/site/about.md is required (FR-014)');
+const { Content } = await render(about);
+---
+
+<Gallery title="About the collection">
+  <h1>About the collection</h1>
+  <div class="prose"><Content /></div>
+</Gallery>

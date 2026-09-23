@@ -1,0 +1,29 @@
+---
+import { indexPath } from '../lib/exhibits';
+
+interface Props {
+  currentPage: number;
+  totalPages: number;
+}
+
+const { currentPage, totalPages } = Astro.props;
+const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+---
+
+{
+  totalPages > 1 && (
+    <nav class="pagination" aria-label="Gallery pages">
+      {currentPage > 1 && <a href={indexPath(currentPage - 1)}>Previous</a>}
+      {pages.map((page) =>
+        page === currentPage ? (
+          <a href={indexPath(page)} aria-current="page">
+            {page}
+          </a>
+        ) : (
+          <a href={indexPath(page)}>{page}</a>
+        ),
+      )}
+      {currentPage < totalPages && <a href={indexPath(currentPage + 1)}>Next</a>}
+    </nav>
+  )
+}

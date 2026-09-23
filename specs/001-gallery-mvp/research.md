@@ -131,7 +131,9 @@ remaining low-impact gaps (page size, fate of an unpublished exhibit's image).
     emitted image, and every published image in `dist/` passes the metadata verifier
     (SC-002).
   - **Playwright + @axe-core/playwright** for end-to-end journeys (US1–US3 acceptance
-    scenarios) and WCAG AA checks (FR-006, SC-004), against `astro preview`.
+    scenarios) and WCAG AA checks (FR-006, SC-004), against the built site served by
+    `scripts/serve-dist.mjs`. Astro 7's `astro preview` detaches into a locked background
+    daemon when it has no terminal, which Playwright can't manage.
 - **Rationale**: The constitution makes accessibility, including contrast, a MUST, and
   contrast can only be checked reliably in a rendering browser. Everything else is covered by
   fast Node-only tests.

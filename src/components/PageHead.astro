@@ -1,0 +1,35 @@
+---
+import type { ImageMetadata } from 'astro';
+import { getImage } from 'astro:assets';
+import { COLLECTION_DESCRIPTION, SITE_NAME } from '../lib/site';
+
+interface Props {
+  title: string;
+  kind: 'exhibit' | 'collection';
+  image?: ImageMetadata;
+}
+
+const { title, kind, image } = Astro.props;
+const site = Astro.site;
+const pageTitle = title === SITE_NAME ? SITE_NAME : `${title} · ${SITE_NAME}`;
+const pageUrl = site ? new URL(Astro.url.pathname, site).href : undefined;
+
+// Exhibit pages preview with a metadata-free JPEG derived from the cleaned image (R12).
+let previewImage: string | undefined;
+if (site && kind === 'exhibit' && image) {
+  const preview = await getImage({ src: image, width: 1200, format: 'jpeg' });
+  previewImage = new URL(preview.src, site).href;
+}
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{pageTitle}</title>
+<meta name="description" content={COLLECTION_DESCRIPTION} />
+<meta property="og:site_name" content={SITE_NAME} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={COLLECTION_DESCRIPTION} />
+<meta property="og:type" content={kind === 'exhibit' ? 'article' : 'website'} />
+{pageUrl && <meta property="og:url" content={pageUrl} />}
+{previewImage && <meta property="og:image" content={previewImage} />}
+<meta name="twitter:card" content={previewImage ? 'summary_large_image' : 'summary'} />

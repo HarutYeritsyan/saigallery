@@ -1,0 +1,1 @@
+Every image in this gallery was published, in earnest, in a real public post on LinkedIn or another social media platform. Each was meant to catch an audience's eye or to convey something useful. Each is exhibited here because it grossly failed to do either.

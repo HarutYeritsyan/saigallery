@@ -1,0 +1,24 @@
+---
+import { getCollection, getEntry, render } from 'astro:content';
+import ExhibitFloor from '../components/ExhibitFloor.astro';
+import Gallery from '../layouts/Gallery.astro';
+import { paginate, publishedInOrder } from '../lib/exhibits';
+import { SITE_NAME } from '../lib/site';
+
+const pages = paginate(publishedInOrder(await getCollection('exhibits')));
+const intro = await getEntry('site', 'intro');
+if (!intro) throw new Error('src/content/site/intro.md is required (FR-014)');
+const { Content: Intro } = await render(intro);
+---
+
+<Gallery title={SITE_NAME}>
+  <h1 class="visually-hidden">{SITE_NAME}</h1>
+  <div class="wall-text"><Intro /></div>
+  {
+    pages.length === 0 ? (
+      <p class="empty-state">The gallery is being installed. Please come back soon.</p>
+    ) : (
+      <ExhibitFloor exhibits={pages[0]} currentPage={1} totalPages={pages.length} />
+    )
+  }
+</Gallery>

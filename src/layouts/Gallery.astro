@@ -1,0 +1,32 @@
+---
+import type { ImageMetadata } from 'astro';
+import PageHead from '../components/PageHead.astro';
+import { SITE_NAME } from '../lib/site';
+import '../styles/gallery.css';
+
+interface Props {
+  title: string;
+  kind?: 'exhibit' | 'collection';
+  image?: ImageMetadata;
+}
+
+const { title, kind = 'collection', image } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <PageHead title={title} kind={kind} image={image} />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="site-name" href="/">{SITE_NAME}</a>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <a href="/about/">About the collection</a>
+    </footer>
+  </body>
+</html>

@@ -1,36 +1,27 @@
 <!--
 Sync Impact Report
-- Version change: 1.0.0 → 2.0.0
-- Rationale: MAJOR bump — reverses the source-disclosure requirement of Principle III from
-  mandatory public citation to mandatory non-disclosure and non-retention. This is a
-  backward-incompatible redefinition of a principle per this document's own versioning rules
-  ("relaxing the non-defamation or source-traceability requirements" = MAJOR).
+- Version change: 3.0.0 → 3.1.0
+- Rationale: MINOR bump — adds a new principle (VI) requiring the gallery to frame its exhibits,
+  as a collection, as real images found in public social media posts (LinkedIn and other
+  platforms) that were meant to engage or inform and failed. No existing principle is removed or
+  relaxed: per-exhibit source non-disclosure (Principle III) is unchanged and clarified.
 - Modified principles:
-  - I. Curatorial Purpose Over Engagement — closing clause reworded; ridicule boundary no longer
-    references a publicly traceable "fact that they published it," since that fact is no longer
-    disclosed anywhere on the platform (Principle III).
-  - III. Evidence-Based Entries (Source Traceability) → III. Image-Only Presentation (Source
-    Non-Disclosure) — requirement inverted: entries MUST NOT publicly disclose source URL,
-    platform, author identity, or publication date, and no private/internal record of that
-    information is retained after curation either.
-  - IV. Non-Defamation & Takedown Path — takedown/dispute mechanism can no longer cross-check a
-    request against a maintained source record (none exists). Rewritten to rely on the requester
-    identifying/describing the specific entry themselves, with a TODO flagging that a concrete
-    verification process is still undesigned.
-  - V. Simplicity & Static-First Delivery — removed reference to "source links" as part of the
-    minimal architecture description, since Principle III now prohibits them.
-- Added sections: none (no new headings; existing principles amended in place).
+  - III. Image-Only Presentation (Source Non-Disclosure) — clarified that the collection-level
+    provenance statement required by Principle VI is not a disclosure of any individual entry's
+    platform; per-entry platform attribution remains prohibited.
+- Added sections:
+  - VI. Found in the Wild (Collection Provenance) — site-wide framing requirement plus an
+    authenticity rule (every exhibit is a genuine, publicly posted image; nothing fabricated;
+    only metadata removal, re-encoding, and cropping/redaction of identifying details allowed).
+- Development Workflow & Review Gates: Principle VI added to the curatorial-policy review list.
 - Removed sections: none.
 - Deferred / TODO items:
-  - TODO(TECH_STACK): carried over from v1.0.0, still unresolved — no implementation stack has
-    been chosen yet.
-  - TODO(TAKEDOWN_VERIFICATION_PROCESS): no concrete mechanism yet exists for verifying that a
-    takedown requester is the depicted author, now that no source record is retained to
-    cross-check against. Must be designed before public launch. Supersedes and subsumes the
-    v1.0.0 TODO(TAKEDOWN_PROCESS_OWNER) (contact mechanism), which is folded into this item since
-    both the contact path and the verification method need to be designed together.
-- Templates requiring follow-up: none required immediate edits; plan/spec/tasks templates
-  consume this constitution at runtime and were not modified by this command.
+  - none. (TODO(TECH_STACK) from v1.0.0 no longer appears in the body; the Gallery MVP plan
+    settles the stack as an Astro static site.)
+- Dependent artifacts requiring follow-up:
+  - specs/001-gallery-mvp/spec.md ⚠ has no requirement for collection-level framing text or for
+    an authenticity check at curation; plan/contracts need a matching framing element.
+  - Templates: none modified; they consume this constitution at runtime.
 -->
 
 # SAIGallery Constitution
@@ -68,7 +59,10 @@ Every exhibited entry MUST show only the image itself and a curatorial caption/c
 Entries MUST NOT publicly disclose the source URL, platform name, author handle or other
 identity marker, or original publication date. No private or internal record of that source
 information (URL, platform, date, or author identity) MUST be retained once an entry is
-curated — nothing is kept to consult later, publicly or privately.
+curated — nothing is kept to consult later, publicly or privately. The collection-level
+statement required by Principle VI (that exhibits come from LinkedIn and other social media
+platforms) is not a disclosure of any entry's source: no individual entry MAY be attributed to,
+labeled with, or styled to identify a specific platform.
 
 **Rationale**: Withholding and not retaining source information removes the platform's ability
 to direct traffic, harassment, or engagement toward the original poster, reinforcing Principle
@@ -76,28 +70,21 @@ I's anti-harassment stance. It also enables planned interactive features (e.g., 
 guessing what the original post was about, based solely on the image) that depend on the
 original context being genuinely unavailable rather than merely unlinked.
 
-### IV. Non-Defamation & Author Recourse
-The platform MUST provide a low-friction way for a person who believes they are the depicted
-author to request correction of context or removal of an entry. Because Principle III prohibits
-disclosing or retaining source URL, platform, date, or identity, the platform CANNOT cross-check
-a removal request against a maintained record; a request MUST instead be resolved by the
-requester identifying or describing the specific entry themselves (e.g., by describing the
-image's contents), with their own supporting evidence of authorship where feasible. All captions
-and labels MUST be reviewed against Principle I before publication: they may say the image is
-incoherent, bloated, or poorly curated; they MUST NOT make claims about the author as a person
-or their identity.
+### IV. Non-Defamation by Construction
+The platform MUST NOT offer a visitor-facing correction, dispute, or removal request mechanism.
+Because no after-the-fact correction path exists, every caption and label MUST be reviewed
+against Principle I before publication, and that review is the platform's sole defamation
+safeguard: captions may say the image is incoherent, bloated, or poorly curated; they MUST NOT
+make claims about the author as a person, their identity, their intent beyond what the image
+itself shows, or any fact that is not verifiable from the image alone. An entry whose caption
+cannot pass this review MUST NOT be published. The curator MAY still edit or unpublish an entry
+on their own initiative.
 
-**Rationale**: Protects the platform from legal and ethical harm (defamation, harassment) while
-preserving its critical mission and the non-disclosure stance of Principle III. A credible,
-if necessarily unverified-by-record, dispute path is what keeps "museum of shame" a curatorial
-stance rather than a liability.
-
-TODO(TAKEDOWN_VERIFICATION_PROCESS): No concrete mechanism yet exists for verifying that a
-takedown requester is in fact the depicted author, now that no source record is kept to compare
-against. A submission/contact path and a verification approach (e.g., requester privately
-describes distinguishing details of the original post for one-time comparison before any record
-is discarded, or removal is granted on request without contestable verification, accepting some
-risk of bad-faith takedowns) must both be designed before public launch.
+**Rationale**: With source information neither disclosed nor retained (Principle III), the
+exhibited image is anonymous on the platform and a requester's claim of authorship cannot be
+checked against anything. The project therefore relies on prevention rather than remedy:
+confining every statement to the artifact itself means there is nothing about a person to
+correct.
 
 ### V. Simplicity & Static-First Delivery
 The implementation MUST default to the simplest architecture that satisfies a browsable image
@@ -111,6 +98,23 @@ engagement-pattern regressions.
 architecture minimal keeps it maintainable and prevents scope creep into exactly the kind of
 engagement-driven product the project exists to criticize.
 
+### VI. Found in the Wild (Collection Provenance)
+The gallery MUST make clear to every visitor, before or while they view exhibits, that the
+collection consists of real images that were published in actual public posts on LinkedIn and
+other social media platforms, where they were meant to engage an audience or convey useful
+information, and that each was chosen because it grossly failed to do so. This framing MUST be
+present on the gallery's entry point and reachable from every exhibit page. Every exhibit MUST be
+a genuine image the curator found in such a public post; the curator MUST NOT fabricate,
+generate, or alter an image to create an exhibit. The only permitted changes are removing
+embedded metadata, re-encoding, and cropping or redacting to remove identifying information
+(names, handles, avatars, platform interface elements) as Principle III requires.
+
+**Rationale**: The critique only lands if visitors know these images were not made up for the
+joke: someone chose to publish each one to a professional or social audience as if it were
+engaging or informative. Stating this once, for the collection as a whole, gives visitors the
+context to judge the lack of sense and taste without pointing at any individual post or person
+(Principles I and III).
+
 ## Content & Accessibility Standards
 
 Every image MUST include descriptive alt text summarizing what is literally depicted, separate
@@ -121,7 +125,7 @@ austerity.
 
 ## Development Workflow & Review Gates
 
-Any change to curatorial policy or entry criteria (Principles I, III, IV) MUST be reviewed
+Any change to curatorial policy or entry criteria (Principles I, III, IV, VI) MUST be reviewed
 explicitly against those principles before merge, and the review MUST be documented in the
 pull request description. Any UI or design change MUST be checked against Principle II; a
 change that measurably increases session length, return-visit rate, or sharing virality as its
@@ -134,7 +138,7 @@ This constitution supersedes ad hoc practice for SAIGallery. Amendments require 
 rationale (what changed and why) and a version bump following semantic versioning:
 
 - **MAJOR**: Backward-incompatible removal or redefinition of a principle (e.g., relaxing the
-  non-defamation or source-traceability requirements).
+  non-defamation or source non-disclosure requirements).
 - **MINOR**: A new principle or materially expanded section is added.
 - **PATCH**: Wording clarifications or non-semantic refinements.
 
@@ -142,4 +146,4 @@ All pull requests MUST verify compliance with the Core Principles above; unjusti
 or engagement-pattern additions MUST be flagged in review. Use this file as the source of truth
 for runtime development guidance until a separate agent-specific guidance file supersedes it.
 
-**Version**: 2.0.0 | **Ratified**: 2026-09-22 | **Last Amended**: 2026-09-22
+**Version**: 3.1.0 | **Ratified**: 2026-09-22 | **Last Amended**: 2026-09-23

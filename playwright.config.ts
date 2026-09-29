@@ -14,7 +14,11 @@ export default defineConfig({
   testDir: 'tests/e2e',
   fullyParallel: true,
   reporter: 'list',
-  use: { ...devices['Desktop Chrome'] },
+  use: {
+    ...devices['Desktop Chrome'],
+    // Only the devcontainer sets PW_NO_SANDBOX (it blocks Chromium's sandbox); elsewhere it stays on.
+    launchOptions: process.env.PW_NO_SANDBOX ? { chromiumSandbox: false } : {},
+  },
   projects: [
     { name: 'fixtures', testIgnore: /empty\.spec\.ts/, use: { baseURL: 'http://localhost:4321' } },
     { name: 'empty', testMatch: /empty\.spec\.ts/, use: { baseURL: 'http://localhost:4322' } },

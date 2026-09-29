@@ -19,9 +19,25 @@ COPY --from=uv /usr/share/bash-completion/completions/uv /usr/share/bash-complet
 # installed later, in postCreateCommand, as the "dev" user (their own installers, no npm).
 RUN corepack enable
 
+# System libraries for Playwright's Chromium (end-to-end and accessibility tests). This is the
+# list `pnpm exec playwright install-deps --dry-run chromium` prints for Debian trixie, pinned
+# here so the build is reproducible; regenerate it when Playwright is upgraded. The base image
+# ships no apt package lists, so `apt-get update` comes first and the lists are removed after.
+# The browser itself is downloaded later, as the "dev" user, with `pnpm exec playwright install chromium`.
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends \
+      fonts-freefont-ttf fonts-ipafont-gothic fonts-liberation fonts-noto-color-emoji \
+      fonts-tlwg-loma-otf fonts-unifont fonts-wqy-zenhei \
+      libasound2t64 libatk1.0-0t64 libatk-bridge2.0-0t64 libatspi2.0-0t64 libcairo2 libcups2t64 \
+      libdbus-1-3 libdrm2 libfontconfig1 libfreetype6 libgbm1 libglib2.0-0t64 libnspr4 libnss3 \
+      libpango-1.0-0 libx11-6 libxcb1 libxcomposite1 libxdamage1 libxext6 libxfixes3 \
+      libxkbcommon0 libxrandr2 xfonts-scalable xvfb \
+ && rm -rf /var/lib/apt/lists/*
+
 USER dev
 
 RUN mkdir -p \
+      /home/dev/.cache/ms-playwright \
       /home/dev/.cache/uv \
       /home/dev/.local/bin \
       /home/dev/.local/share/uv \

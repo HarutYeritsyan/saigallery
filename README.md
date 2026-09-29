@@ -111,6 +111,10 @@ pnpm test:build   # builds with the test fixtures, then checks the build output
 pnpm test:e2e     # browser tests and accessibility checks (needs Chromium; see below)
 ```
 
-End-to-end tests need Playwright's Chromium: run `pnpm exec playwright install --with-deps chromium`.
-The `--with-deps` part installs system libraries and needs root, so in the devcontainer it
-belongs in the Dockerfile. Test fixtures are regenerated with `node tests/fixtures/generate.mjs`.
+End-to-end tests need Playwright's Chromium. In the devcontainer the system libraries it needs are
+installed by `.devcontainer/Dockerfile` (root is needed for that), so after rebuilding the container run
+`pnpm exec playwright install chromium` once; the download is kept in a volume. The container blocks
+Chromium's sandbox, so it sets `PW_NO_SANDBOX=1`, which `playwright.config.ts` turns into a launch without
+one; leave it unset anywhere else. Outside the devcontainer use
+`pnpm exec playwright install --with-deps chromium` instead. Test fixtures are regenerated with
+`node tests/fixtures/generate.mjs`.

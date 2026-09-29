@@ -4,7 +4,13 @@ Visual-design explorations for SAIGallery, made with Claude's Design canvas (202
 Brief: a museum in the spirit of *How to Steal a Million*, with each exhibit treated like a crown on a
 red velvet pillow behind a golden cordon.
 
-These are design references, not site code. Nothing under `src/` uses them yet.
+These are design references, not site code.
+
+**Status**: the velvet room (dark option) is implemented by feature 002
+(`specs/002-velvet-room-design/`), in `src/styles/gallery.css` and the exhibit components. The caveats
+below are resolved there: the fonts are self-hosted (no Google Fonts), the cordon is drawn per card so it
+follows the 1 to 4 column layout, and the real exhibit images replace the placeholders. The light option
+(salon blanc) is kept here for reference and is not used by the site.
 
 Canvas (private to its owner): https://claude.ai/artifact/JVjhc3H5ZqdHvxxzbrsRjH
 

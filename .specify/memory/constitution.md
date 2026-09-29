@@ -1,26 +1,28 @@
 <!--
 Sync Impact Report
-- Version change: 3.0.0 → 3.1.0
-- Rationale: MINOR bump — adds a new principle (VI) requiring the gallery to frame its exhibits,
-  as a collection, as real images found in public social media posts (LinkedIn and other
-  platforms) that were meant to engage or inform and failed. No existing principle is removed or
-  relaxed: per-exhibit source non-disclosure (Principle III) is unchanged and clarified.
+- Version change: 3.1.0 → 3.2.0
+- Rationale: MINOR bump — materially expands Principle II's guidance. The "restrained neutral
+  palettes" requirement is replaced by a rule that permits a rich, period-museum palette (deep
+  oxblood walls, red velvet, brass and gold) as long as every text and background pair meets WCAG
+  AA. Nothing is relaxed on engagement design: the pattern prohibitions are kept in full, and a new
+  rule forbids decorative motion that autoplays or loops. Prompted by the velvet room design in
+  design/gallery-museum/ (feature 002).
 - Modified principles:
-  - III. Image-Only Presentation (Source Non-Disclosure) — clarified that the collection-level
-    provenance statement required by Principle VI is not a disclosure of any individual entry's
-    platform; per-entry platform attribution remains prohibited.
-- Added sections:
-  - VI. Found in the Wild (Collection Provenance) — site-wide framing requirement plus an
-    authenticity rule (every exhibit is a genuine, publicly posted image; nothing fabricated;
-    only metadata removal, re-encoding, and cropping/redaction of identifying details allowed).
-- Development Workflow & Review Gates: Principle VI added to the curatorial-policy review list.
+  - II. Museum Aesthetic, Not Engagement Design — palette requirement changed from "restrained
+    neutral" to "museum-period palettes allowed, WCAG AA still required"; wall-text captions and
+    plaque-like metadata kept; added "no autoplaying or looping decorative motion"; rationale
+    updated to say the look may be grand but must not be captivating.
+- Content & Accessibility Standards — removed the phrase "within the project's muted, museum-style
+  palette" so it no longer implies a muted palette; the WCAG AA requirement itself is unchanged.
+- Added sections: none.
 - Removed sections: none.
-- Deferred / TODO items:
-  - none. (TODO(TECH_STACK) from v1.0.0 no longer appears in the body; the Gallery MVP plan
-    settles the stack as an Astro static site.)
+- Deferred / TODO items: none.
 - Dependent artifacts requiring follow-up:
-  - specs/001-gallery-mvp/spec.md ⚠ has no requirement for collection-level framing text or for
-    an authenticity check at curation; plan/contracts need a matching framing element.
+  - specs/002-velvet-room-design/spec.md ⚠ FR-015 depends on this amendment; the spec's
+    Clarifications section already records the decision. Run /speckit-plan next.
+  - specs/001-gallery-mvp/plan.md: its Principle II check row is unaffected (it covers only the
+    engagement-pattern prohibitions); its project-layout note "restrained palette" for
+    gallery.css and that file's own opening comment will be outdated once feature 002 ships.
   - Templates: none modified; they consume this constitution at runtime.
 -->
 
@@ -43,16 +45,20 @@ quality failure from harassment of an individual. It keeps the project's mission
 practice of publishing unfiltered AI slop") intact without becoming a target list of people.
 
 ### II. Museum Aesthetic, Not Engagement Design
-The gallery MUST be styled as a physical museum exhibit: restrained neutral palettes, wall-text
-style captions, plaque-like metadata, and deliberate, unhurried browsing — not as a social or
-consumer app. The interface MUST NOT use engagement-optimizing patterns, including but not
-limited to: infinite scroll, like/upvote counters, algorithmic "for you" recommendation feeds,
-autoplay carousels, gamified sharing mechanics, or push/engagement notifications.
+The gallery MUST be styled as a physical museum exhibit: wall-text style captions, plaque-like
+metadata, and deliberate, unhurried browsing — not as a social or consumer app. The palette MAY
+be as rich as a period museum's (for example deep oxblood walls, red velvet, brass and gold),
+provided every text and background pair still meets WCAG AA (see Content & Accessibility
+Standards). The interface MUST NOT use engagement-optimizing patterns, including but not limited
+to: infinite scroll, like/upvote counters, algorithmic "for you" recommendation feeds, autoplay
+carousels, gamified sharing mechanics, or push/engagement notifications. Decorative motion MUST
+NOT autoplay or loop.
 
 **Rationale**: The project's intent is explicitly to read as a historical record of "stupidity
-and slop," not to be enchanting or captivating. Any design choice optimizing for time-on-site
-or virality works against the curatorial message and MUST be rejected even if it is common
-practice for image galleries.
+and slop," not to be enchanting or captivating. A grand museum setting serves that intent, since
+treating these images with mock reverence sharpens the joke, so the palette is free to be
+dramatic. Any design choice optimizing for time-on-site or virality works against the curatorial
+message and MUST be rejected even if it is common practice for image galleries.
 
 ### III. Image-Only Presentation (Source Non-Disclosure)
 Every exhibited entry MUST show only the image itself and a curatorial caption/critique.
@@ -119,9 +125,8 @@ context to judge the lack of sense and taste without pointing at any individual 
 
 Every image MUST include descriptive alt text summarizing what is literally depicted, separate
 from its curatorial caption, so screen reader users receive the same factual content as
-sighted users. Caption and label text MUST meet WCAG AA contrast requirements even within the
-project's muted, museum-style palette. Accessibility MUST NOT be sacrificed for aesthetic
-austerity.
+sighted users. Caption and label text MUST meet WCAG AA contrast requirements whatever the
+palette. Accessibility MUST NOT be sacrificed for aesthetic effect.
 
 ## Development Workflow & Review Gates
 
@@ -146,4 +151,4 @@ All pull requests MUST verify compliance with the Core Principles above; unjusti
 or engagement-pattern additions MUST be flagged in review. Use this file as the source of truth
 for runtime development guidance until a separate agent-specific guidance file supersedes it.
 
-**Version**: 3.1.0 | **Ratified**: 2026-09-22 | **Last Amended**: 2026-09-23
+**Version**: 3.2.0 | **Ratified**: 2026-09-22 | **Last Amended**: 2026-09-23

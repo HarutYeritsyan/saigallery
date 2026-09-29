@@ -3,7 +3,6 @@ import { copyFile, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { promisify } from 'node:util';
 import { describe, expect, it } from 'vitest';
-// @ts-expect-error — plain .mjs module without type declarations
 import { verify } from '../../scripts/verify-exhibits.mjs';
 import { FIXTURE_RAW, tempFixtures } from './helpers';
 

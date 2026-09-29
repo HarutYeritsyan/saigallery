@@ -1,99 +1,284 @@
-/* Restrained museum palette. Every text/background pair below meets WCAG AA (Principle II, FR-006):
-   ink on wall ≈ 15:1, muted-ink on wall ≈ 7:1, ink on plaque ≈ 16:1, accent on wall ≈ 7.5:1. */
+/* The velvet room (feature 002). Every colour is a token in :root and every text/background pair is
+   checked for WCAG AA by tests/unit/room-contrast.test.ts (spec FR-007). Token names and values are
+   documented in specs/002-velvet-room-design/data-model.md. Rules below :root use tokens only. */
 :root {
-  --wall: #f4f1ec;
-  --plaque: #fbfaf7;
-  --frame: #d9d3c8;
-  --ink: #1f1d1a;
-  --muted-ink: #57524a;
-  --accent: #6b3f1f;
-  --gap: clamp(1rem, 2.5vw, 2rem);
+  --wall: #3a0a12;
+  --velvet: #9a1a2c;
+  --gold: #d9b45b;
+  --gold-hi: #f4dc94;
+  --gold-lo: #8a6a24;
+  --cream: #f1e6cf;
+  --cream-dim: #cdbf9f;
+  --brass-ink: #1c0f08;
+  --plaque: #efe3c6;
+  --plaque-ink: #241812;
+  --plaque-rule: #b8923f;
+  --matting: #24070d;
+  --shade: rgba(0, 0, 0, 0.5);
+  --velvet-shine: rgba(255, 150, 150, 0.28);
+  --piping: rgba(217, 180, 91, 0.6);
+  --hairline: rgba(217, 180, 91, 0.5);
+  --stripe: rgba(255, 255, 255, 0.018);
+  --rope-shade: #5a3d0c;
+  /* Wall glow behind a piece. Only cream text may sit over it (gold would fail AA on the peak). */
+  --spotlight-index: rgba(255, 214, 150, 0.22);
+  --spotlight-exhibit: rgba(255, 214, 150, 0.26);
+  --gutter: max(1.75rem, 2.5vw);
   --measure: 38rem;
-  color-scheme: light;
+  --font-display: 'Bodoni Moda', Georgia, 'Times New Roman', serif;
+  --font-body: 'EB Garamond', Georgia, 'Times New Roman', serif;
+  color-scheme: dark;
+}
+
+/* Self-hosted Latin subsets (research R1). font-display: swap shows the fallback serif at once. */
+@font-face {
+  font-family: 'Bodoni Moda';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../assets/fonts/bodoni-moda-latin-500-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'EB Garamond';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/eb-garamond-latin-400-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'EB Garamond';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../assets/fonts/eb-garamond-latin-600-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'EB Garamond';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/eb-garamond-latin-400-italic.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 * { box-sizing: border-box; }
 
+/* The oxblood wall, with a very faint vertical silk stripe. */
 html {
-  background: var(--wall);
-  color: var(--ink);
-  font-family: Georgia, 'Times New Roman', serif;
+  background-color: var(--wall);
+  background-image: repeating-linear-gradient(90deg, var(--stripe) 0, var(--stripe) 2px, transparent 2px, transparent 7px);
+  color: var(--cream);
+  font-family: var(--font-body);
   line-height: 1.55;
 }
 
-body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; }
+body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; font-size: 1.25rem; }
 
-a { color: var(--accent); text-underline-offset: 0.2em; }
-a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+a { color: var(--gold); text-underline-offset: 0.2em; }
+a:hover { color: var(--gold-hi); }
+a:focus-visible { outline: 3px solid var(--gold-hi); outline-offset: 4px; }
 
-.site-header, .site-footer, main { width: min(72rem, 100% - 2 * var(--gap)); margin-inline: auto; }
-
-.site-header { padding-block: 2rem 1rem; border-bottom: 1px solid var(--frame); }
-.site-name {
-  font-size: 1rem; letter-spacing: 0.3em; text-transform: uppercase;
-  color: var(--ink); text-decoration: none;
-}
-
-main { flex: 1; padding-block: 2.5rem 4rem; }
-
-.site-footer {
-  padding-block: 1.5rem 2.5rem; border-top: 1px solid var(--frame);
-  color: var(--muted-ink); font-size: 0.95rem;
-}
-
-h1 { font-weight: normal; font-size: clamp(1.6rem, 3vw, 2.2rem); margin: 0 0 1.5rem; }
-
-.wall-text { max-width: var(--measure); color: var(--muted-ink); font-size: 1.1rem; margin-bottom: 3rem; }
-.wall-text p { margin: 0 0 0.8rem; }
-
-.prose { max-width: var(--measure); }
-
-/* Index grid: 2 / 3 / 4 columns. */
-.exhibit-grid {
-  list-style: none; margin: 0; padding: 0;
-  display: grid; gap: var(--gap);
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-@media (min-width: 48rem) { .exhibit-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media (min-width: 68rem) { .exhibit-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-
-.exhibit-card a { display: block; color: var(--ink); text-decoration: none; }
-.exhibit-card img {
-  display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover;
-  background: var(--plaque); border: 1px solid var(--frame);
-}
-.exhibit-card .card-title { display: block; margin-top: 0.6rem; font-size: 0.95rem; }
-.exhibit-card a:hover .card-title { text-decoration: underline; }
-
-.empty-state { color: var(--muted-ink); font-size: 1.15rem; max-width: var(--measure); }
-
-.pagination { margin-top: 3rem; display: flex; flex-wrap: wrap; gap: 0.75rem 1.25rem; align-items: baseline; }
-.pagination [aria-current='page'] { color: var(--ink); font-weight: bold; text-decoration: none; }
-
-/* Exhibit page. */
-.exhibit { display: grid; gap: 2rem; }
-.exhibit-figure { margin: 0; display: grid; gap: 1.5rem; }
-.exhibit-image { position: relative; background: var(--plaque); border: 1px solid var(--frame); }
-.exhibit-image img { display: block; width: 100%; height: auto; }
-.image-unavailable-notice {
-  position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%);
-}
-.exhibit-image.image-unavailable { min-height: 12rem; display: grid; place-items: center; }
-.exhibit-image.image-unavailable img { display: none; }
-.exhibit-image.image-unavailable .image-unavailable-notice {
-  position: static; width: auto; height: auto; clip-path: none; color: var(--muted-ink); padding: 2rem;
-}
-
-.plaque {
-  background: var(--plaque); border: 1px solid var(--frame); padding: 1.25rem 1.5rem;
-  max-width: var(--measure); font-size: 1.05rem;
-}
-.plaque p { margin: 0 0 0.8rem; }
-.plaque p:last-child { margin-bottom: 0; }
-
-.framing-note { color: var(--muted-ink); font-size: 0.95rem; }
-.back-link { font-size: 0.95rem; }
+h1 { font-family: var(--font-display); font-weight: 500; letter-spacing: 0.03em; margin: 0 0 1.5rem; overflow-wrap: anywhere; }
 
 .visually-hidden {
   position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
 }
+
+/* "Image unavailable" (feature 001, FR-006): the notice is hidden until the inline onerror on the
+   image adds .image-unavailable. Behaviour only; the frame around it is styled with the exhibit page. */
+.exhibit-image { position: relative; }
+.image-unavailable-notice {
+  position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%);
+}
+.exhibit-image.image-unavailable { min-height: 12rem; display: grid; place-items: center; background-color: var(--matting); }
+.exhibit-image.image-unavailable img { display: none; }
+.exhibit-image.image-unavailable .image-unavailable-notice {
+  position: static; width: auto; height: auto; clip-path: none; color: var(--cream); padding: 2rem;
+}
+
+/* Page furniture shared by every page: header, main column and footer (spec FR-001). The column is at
+   most 78 rem wide (1248 px in the design) with a gutter that also holds the cordon's outer posts. */
+.site-header, .site-footer, main { width: min(78rem, 100% - 2 * var(--gutter)); margin-inline: auto; }
+
+.site-header { padding-block: 2.4rem 1.4rem; text-align: center; border-bottom: 5px double var(--gold); }
+.site-name {
+  font-family: var(--font-display); font-weight: 500; font-size: clamp(1.25rem, 5.5vw, 1.9rem);
+  letter-spacing: 0.42em; padding-left: 0.42em; text-transform: uppercase;
+  color: var(--gold); text-decoration: none;
+}
+.site-name:hover { color: var(--gold-hi); }
+
+main { flex: 1; padding-block: 2.5rem 4rem; }
+
+.site-footer {
+  padding-block: 1.6rem 2.5rem; border-top: 1px solid var(--hairline);
+  text-align: center; font-size: 1.125rem;
+}
+
+/* ---- The gallery wall (US1) ---------------------------------------------------------------- */
+
+/* Gap-free columns: 1 below 40 rem, 2 from 40 rem, 3 from 58 rem, 4 from 76 rem, so a cell is never
+   narrower than about 290 px (research R5). Each cell keeps its own padding, and neighbouring cells
+   touch, so the cordon posts at their shared edges coincide. */
+.exhibit-grid {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: minmax(0, 1fr);
+}
+@media (min-width: 40rem) { .exhibit-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 58rem) { .exhibit-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 76rem) { .exhibit-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+/* The card is a size container so its children can size the frame from the cell's own width. */
+.exhibit-card {
+  position: relative; container-type: inline-size;
+  padding: 1.75rem 1.75rem 3.6rem;
+  background-image: radial-gradient(ellipse at 50% 32%, var(--spotlight-index), transparent 62%);
+}
+/* 100cqw is the card's content width (its padding is already excluded). */
+.exhibit-card > a, .exhibit-card > .cordon { --piece: min(100cqw, 14rem); }
+
+.exhibit-card > a {
+  display: flex; flex-direction: column; align-items: center;
+  color: inherit; text-decoration: none;
+}
+
+/* The piece: a gold frame around the image, resting on a red velvet pillow. */
+.frame {
+  position: relative; z-index: 2; display: block; width: var(--piece); padding: 6px;
+  background: linear-gradient(135deg, var(--gold-hi), var(--gold) 45%, var(--gold-lo));
+  box-shadow: 0 10px 24px var(--shade);
+}
+.frame img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; background-color: var(--matting); }
+
+/* Wider than the frame, but capped so its tassels (7 px past each end) stay inside the cell. */
+.pillow {
+  position: relative; z-index: 1; display: block;
+  width: min(var(--piece) + 2.5rem, 100% + 2.625rem); height: 3.6rem; margin-top: -1.4rem;
+  border: 1px solid var(--piping); border-radius: 1.65rem;
+  background-color: var(--velvet);
+  box-shadow: inset 0 10px 16px var(--velvet-shine), inset 0 -14px 18px var(--shade), 0 14px 22px var(--shade);
+}
+.pillow::before, .pillow::after {
+  content: ''; position: absolute; bottom: -0.875rem; width: 0.75rem; height: 1.625rem;
+  border-radius: 0.375rem; background-color: var(--gold);
+}
+.pillow::before { left: -0.4375rem; }
+.pillow::after { right: -0.4375rem; }
+
+/* The brass nameplate: the display title and nothing else. */
+.card-title {
+  display: block; max-width: 100%; margin-top: 3.1rem; padding: 0.6rem 1.4rem 0.65rem;
+  background-color: var(--gold); color: var(--brass-ink); text-align: center;
+  font-family: var(--font-display); font-weight: 500; font-size: 1.25rem; line-height: 1.3;
+  overflow-wrap: anywhere;
+  box-shadow: inset 0 0 0 3px var(--gold), inset 0 0 0 4px var(--gold-lo), 0 6px 12px var(--shade);
+}
+.exhibit-card a:hover .card-title { text-decoration: underline; }
+
+/* ---- The cordon: decoration only (FR-003) ---------------------------------------------------
+   A rope between two brass posts across the front of each card. The posts sit on the card's left and
+   right edges, so posts of neighbouring cards coincide and a short last row ends with a post. The
+   rope's endpoints (the rings) sit just above the pillow's lower edge. It ignores the pointer and
+   never takes focus. */
+.cordon {
+  --ring: 2.1rem; /* height of the rope's endpoints below the top of the cordon box */
+  position: absolute; z-index: 3; pointer-events: none;
+  inset-inline: 0; height: 12.5rem;
+  top: calc(1.75rem + var(--piece) - 1.4rem + 3.6rem - 0.4rem - var(--ring));
+}
+.cordon svg { position: absolute; left: 0; width: 100%; top: calc(var(--ring) - 0.5rem); height: 5rem; overflow: visible; }
+.cordon .rope-under { stroke: var(--rope-shade); stroke-width: 9; }
+.cordon .rope { stroke: var(--gold); stroke-width: 6; }
+.cordon .rope-twist { stroke: var(--gold-hi); stroke-width: 3; stroke-dasharray: 2 6; }
+
+.post {
+  position: absolute; top: 1.6rem; bottom: 0.7rem; width: 0.5rem;
+  background: linear-gradient(90deg, var(--gold-lo), var(--gold-hi) 35%, var(--gold) 70%, var(--gold-lo));
+}
+.post-left { left: 0; transform: translateX(-50%); }
+.post-right { right: 0; transform: translateX(50%); }
+.post::before { /* finial ball */
+  content: ''; position: absolute; top: -1.4rem; left: 50%; width: 1.4rem; height: 1.4rem; margin-left: -0.7rem;
+  border-radius: 50%; background: radial-gradient(circle at 35% 30%, var(--gold-hi), var(--gold-lo));
+}
+.post::after { /* base disc */
+  content: ''; position: absolute; bottom: -0.5rem; left: 50%; width: 3.4rem; height: 1rem; margin-left: -1.7rem;
+  border-radius: 50%; background: linear-gradient(90deg, var(--gold-lo), var(--gold-hi) 35%, var(--gold) 70%, var(--gold-lo));
+}
+
+/* ---- Wall text, paging and the empty state -------------------------------------------------- */
+.wall-text {
+  max-width: 50rem; margin: 0 auto 2.5rem; text-align: center;
+  font-size: clamp(1.2rem, 4.2vw, 1.6rem); line-height: 1.5; font-style: italic; color: var(--cream);
+}
+.wall-text p { margin: 0 0 0.8rem; }
+
+.empty-state { color: var(--cream-dim); font-size: 1.4rem; max-width: var(--measure); margin: 2rem auto; text-align: center; }
+
+.pagination { margin-top: 1rem; display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem 1.75rem; align-items: baseline; font-size: 1.25rem; }
+.pagination [aria-current='page'] { color: var(--cream); font-weight: 600; text-decoration: none; }
+
+/* Forced colours drop the decorative backgrounds, so give the framed parts a visible edge. */
+@media (forced-colors: active) {
+  .frame, .pillow, .card-title, .plaque, .exhibit-image { border: 1px solid CanvasText; }
+}
+
+/* ---- The exhibit page (US2) ----------------------------------------------------------------- */
+.exhibit { display: grid; justify-items: center; }
+.exhibit h1 { font-size: clamp(2rem, 5vw, 2.9rem); margin: 0.5rem 0 2rem; text-align: center; }
+
+/* The figure is a size container so the pillow can be capped at its width. The spotlight lights the
+   wall behind the piece; only cream text sits over it. */
+.exhibit-figure {
+  margin: 0; width: 100%; display: flex; flex-direction: column; align-items: center;
+  container-type: inline-size; padding-bottom: 2rem;
+  background-image: radial-gradient(ellipse at 50% 26%, var(--spotlight-exhibit), transparent 58%);
+}
+
+/* The mount shrink-wraps the whole image, so any aspect ratio is shown uncropped and the frame and
+   pillow follow it: at most 36 rem wide and 80 vh tall. */
+.exhibit-mount { position: relative; width: fit-content; max-width: 100%; display: flex; flex-direction: column; align-items: center; }
+
+/* The frame is the .exhibit-image block itself: a gold border around a dark matting, so a failed
+   image (feature 001) shows its notice on matting, never on gold. */
+.exhibit-image {
+  position: relative; z-index: 2; border: 10px solid transparent;
+  background: linear-gradient(var(--matting), var(--matting)) padding-box, linear-gradient(135deg, var(--gold-hi), var(--gold) 45%, var(--gold-lo)) border-box;
+  box-shadow: 0 16px 36px var(--shade);
+}
+.exhibit-image img { display: block; width: auto; height: auto; max-width: min(100%, 36rem); max-height: 80vh; }
+
+.exhibit-mount .pillow {
+  width: min(100% + 8rem, 100cqw - 0.875rem); height: 5.5rem; margin-top: -2.1rem; border-radius: 2.5rem;
+}
+
+/* The cordon stands in front of the pillow: in flow, pulled up so the rope's rings sit just above the
+   pillow's lower edge, and the caption is pulled up between the posts. */
+.exhibit-figure > .cordon {
+  position: relative; inset-inline: auto; top: auto; width: min(100%, 56rem);
+  margin-top: calc(-0.4rem - var(--ring));
+}
+
+/* The caption plaque: cream, with a double inner rule, apart from the image. */
+.plaque {
+  position: relative; z-index: 4; width: min(100%, var(--measure)); margin: -4.4rem auto 0;
+  padding: clamp(1.25rem, 5vw, 1.9rem) clamp(1.25rem, 6vw, 2.5rem); background-color: var(--plaque); color: var(--plaque-ink);
+  font-size: clamp(1.25rem, 4vw, 1.5rem); line-height: 1.5; overflow-wrap: anywhere;
+  box-shadow: inset 0 0 0 5px var(--plaque), inset 0 0 0 6px var(--plaque-rule), 0 10px 20px var(--shade);
+}
+.plaque p { margin: 0 0 0.8rem; }
+.plaque p:last-child { margin-bottom: 0; }
+
+.framing-note { margin: 1.5rem 0 0.5rem; color: var(--cream-dim); font-size: 1.2rem; font-style: italic; text-align: center; }
+.framing-note a { font-style: normal; }
+.back-link { margin: 0; font-size: 1.25rem; text-align: center; }
+
+/* ---- Text pages: About, "no longer available", 404 (US4) ------------------------------------
+   No frame, pillow or cordon: there is no exhibit to show. They share the wall, type, header and footer. */
+.prose { max-width: var(--measure); margin-inline: auto; font-size: 1.35rem; }
+.prose p { margin: 0 0 1rem; }
+main > h1 { text-align: center; }
+main > p { text-align: center; }

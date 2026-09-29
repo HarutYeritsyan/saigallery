@@ -4,7 +4,6 @@ import { join } from 'node:path';
 import { promisify } from 'node:util';
 import { describe, expect, it } from 'vitest';
 import { inspectImage } from '../../src/lib/image-metadata';
-// @ts-expect-error — plain .mjs module without type declarations
 import { verify } from '../../scripts/verify-exhibits.mjs';
 import { FIXTURE_RAW, tempFixtures } from './helpers';
 

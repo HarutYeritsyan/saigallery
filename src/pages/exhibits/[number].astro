@@ -2,6 +2,7 @@
 import type { GetStaticPaths } from 'astro';
 import { Image } from 'astro:assets';
 import { getCollection, render } from 'astro:content';
+import Cordon from '../../components/Cordon.astro';
 import Plaque from '../../components/Plaque.astro';
 import Gallery from '../../layouts/Gallery.astro';
 import {
@@ -46,17 +47,22 @@ const onImageError = "this.closest('.exhibit-image').classList.add('image-unavai
       <article class="exhibit">
         <h1>{displayTitle(published)}</h1>
         <figure class="exhibit-figure">
-          <div class="exhibit-image">
-            <Image
-              src={published.data.image}
-              alt={published.data.alt}
-              widths={[800, 1200, 1600]}
-              sizes="(min-width: 72rem) 72rem, 100vw"
-              loading="eager"
-              onerror={onImageError}
-            />
-            <p class="image-unavailable-notice">Image unavailable</p>
+          <div class="exhibit-mount">
+            <div class="exhibit-image">
+              {/* The gold frame is at most 36rem wide (gallery.css). */}
+              <Image
+                src={published.data.image}
+                alt={published.data.alt}
+                widths={[800, 1200, 1600]}
+                sizes="(min-width: 40rem) 36rem, 100vw"
+                loading="eager"
+                onerror={onImageError}
+              />
+              <p class="image-unavailable-notice">Image unavailable</p>
+            </div>
+            <span class="pillow" aria-hidden="true"></span>
           </div>
+          <Cordon />
           <Plaque>
             <Caption />
           </Plaque>

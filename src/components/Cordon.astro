@@ -1,0 +1,16 @@
+---
+// A gold rope between two brass posts: pure decoration for the velvet room (spec FR-003). It is
+// hidden from assistive technology, holds no text, ignores the pointer and takes no focus.
+// The rope is an SVG that stretches to whatever width its card or figure has; non-scaling strokes
+// keep its thickness. The posts are drawn in CSS, so they are never stretched. See gallery.css.
+---
+
+<span class="cordon" aria-hidden="true">
+  <span class="post post-left"></span>
+  <svg viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+    <path class="rope-under" d="M 0 4 Q 50 44 100 4" fill="none" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+    <path class="rope" d="M 0 4 Q 50 44 100 4" fill="none" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+    <path class="rope-twist" d="M 0 4 Q 50 44 100 4" fill="none" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+  </svg>
+  <span class="post post-right"></span>
+</span>

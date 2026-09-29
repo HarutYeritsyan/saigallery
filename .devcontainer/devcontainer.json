@@ -12,6 +12,11 @@
   // Remove "no-new-privileges" if you need to gain elevated privileges inside the container (e.g., su, sudo).
   "securityOpt": ["no-new-privileges"],
   "init": true,
+  // --cap-drop=ALL and no-new-privileges usually stop Chromium from creating its sandbox, so tests
+  // launch it without one here. playwright.config.ts honours this; nothing else sets it.
+  "containerEnv": {
+    "PW_NO_SANDBOX": "1"
+  },
   // If you use VS Code, uncomment the following to open $EDITOR/$VISUAL/$GIT_EDITOR (e.g. `git commit`) in a VS Code tab:
   // "remoteEnv": {
   //   "VISUAL": "code --wait",
@@ -60,6 +65,12 @@
     {
       "source": "${devcontainerId}-uv-cache",
       "target": "/home/dev/.cache/uv",
+      "type": "volume"
+    },
+    // Persist the Chromium download that `pnpm exec playwright install chromium` makes.
+    {
+      "source": "${devcontainerId}-playwright-browsers",
+      "target": "/home/dev/.cache/ms-playwright",
       "type": "volume"
     },
     // Persist pnpm's content-addressable package store.

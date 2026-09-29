@@ -19,6 +19,15 @@ describe('no source data in the build (V5, SC-002)', async () => {
     }
   });
 
+  it('has stylesheets that import and load nothing from another origin', async () => {
+    for (const file of files.filter((f) => f.endsWith('.css'))) {
+      const css = await readFile(file, 'utf8');
+      expect(css, file).not.toMatch(/@import/);
+      const foreign = [...css.matchAll(/url\(\s*["']?(https?:[^"')]+)/g)].map((m) => m[1]).filter((u) => !u.startsWith(ORIGIN));
+      expect(foreign, file).toEqual([]);
+    }
+  });
+
   it('contains no source marker anywhere, in text or binary files', async () => {
     for (const file of files) {
       const content = await readFile(file);

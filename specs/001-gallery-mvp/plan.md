@@ -107,7 +107,7 @@ src/
 │   ├── about.astro          # "About the collection" (renders site/about.md)
 │   └── 404.astro
 └── styles/
-    └── gallery.css          # restrained palette, AA-checked tokens
+    └── gallery.css          # velvet room palette (feature 002), AA-checked tokens
 
 scripts/
 ├── exhibit-add.mjs          # ingest: re-encode, strip metadata, assign number, create draft

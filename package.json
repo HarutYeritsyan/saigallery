@@ -12,9 +12,12 @@
     "dev:host": "ASTRO_TELEMETRY_DISABLED=1 astro dev --host 0.0.0.0 --port 4321 --ignore-lock",
     "build": "node scripts/verify-exhibits.mjs && astro build",
     "preview": "astro preview",
+    "lint": "eslint .",
+    "typecheck": "astro check --minimumFailingSeverity error --minimumSeverity error",
     "test": "vitest run tests/unit",
     "test:build": "SITE_URL=http://localhost:4321 EXHIBITS_DIR=tests/fixtures/exhibits pnpm build && vitest run tests/build",
     "test:e2e": "playwright test",
+    "design:preview": "python3 -m http.server 4400 --bind 0.0.0.0 --directory design/gallery-museum/preview",
     "exhibit:add": "node scripts/exhibit-add.mjs",
     "exhibit:unpublish": "node scripts/exhibit-unpublish.mjs",
     "exhibit:verify": "node scripts/verify-exhibits.mjs"
@@ -24,10 +27,17 @@
     "sharp": "0.35.4"
   },
   "devDependencies": {
+    "@astrojs/check": "0.9.10",
     "@axe-core/playwright": "4.13.0",
+    "@eslint/js": "10.0.1",
     "@playwright/test": "1.63.0",
+    "@types/node": "26.5.1",
+    "eslint": "10.10.0",
+    "eslint-plugin-astro": "3.1.0",
+    "globals": "17.12.0",
     "node-html-parser": "9.0.4",
-    "typescript": "7.0.2",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.69.0",
     "vitest": "5.0.1"
   }
 }

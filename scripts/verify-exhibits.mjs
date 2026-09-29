@@ -72,7 +72,7 @@ export async function verify({ dir = exhibitsDir(), siteDir = 'src/content/site'
   }
 
   // Rule 4: image files are named by catalog number, belong to an entry, and carry no metadata.
-  let files = [];
+  let files;
   try {
     files = await readdir(dir);
   } catch {
@@ -100,7 +100,7 @@ export async function verify({ dir = exhibitsDir(), siteDir = 'src/content/site'
   // Rule 7: collection framing copy (FR-014).
   for (const name of ['intro.md', 'about.md']) {
     const file = join(siteDir, name);
-    let text = '';
+    let text;
     try {
       text = await readFile(file, 'utf8');
     } catch {

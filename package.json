@@ -10,6 +10,7 @@
   "scripts": {
     "dev": "astro dev",
     "dev:host": "ASTRO_TELEMETRY_DISABLED=1 astro dev --host 0.0.0.0 --port 4321 --ignore-lock",
+    "dev:local": "EXHIBITS_DIR=./local-exhibits pnpm dev:host",
     "build": "node scripts/verify-exhibits.mjs && astro build",
     "preview": "astro preview",
     "lint": "eslint .",
@@ -20,7 +21,10 @@
     "design:preview": "python3 -m http.server 4400 --bind 0.0.0.0 --directory design/gallery-museum/preview",
     "exhibit:add": "node scripts/exhibit-add.mjs",
     "exhibit:unpublish": "node scripts/exhibit-unpublish.mjs",
-    "exhibit:verify": "node scripts/verify-exhibits.mjs"
+    "exhibit:verify": "node scripts/verify-exhibits.mjs",
+    "verify": "pnpm lint && pnpm typecheck && pnpm test && pnpm test:build",
+    "verify:full": "pnpm verify && pnpm test:e2e",
+    "hooks:install": "git config core.hooksPath .githooks"
   },
   "dependencies": {
     "astro": "7.3.3",

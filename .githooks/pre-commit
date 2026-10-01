@@ -1,0 +1,3 @@
+#!/bin/sh
+# Runs the light checks before every commit. Bypass once with: git commit --no-verify
+exec pnpm verify

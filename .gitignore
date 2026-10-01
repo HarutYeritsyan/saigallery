@@ -20,3 +20,5 @@ playwright-report/
 test-results/
 dist-*/
 /example-content
+# Local-only exhibits (not in git history); serve with `pnpm dev:local`
+/local-exhibits/

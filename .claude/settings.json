@@ -61,5 +61,27 @@
       "Edit(**/.env)",
       "Edit(**/.env.*)"
     ]
+  },
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/sdd-status.mjs\" prompt"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/sdd-status.mjs\" stop"
+          }
+        ]
+      }
+    ]
   }
 }

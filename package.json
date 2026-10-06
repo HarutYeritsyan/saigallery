@@ -24,7 +24,8 @@
     "exhibit:verify": "node scripts/verify-exhibits.mjs",
     "verify": "pnpm lint && pnpm typecheck && pnpm test && pnpm test:build",
     "verify:full": "pnpm verify && pnpm test:e2e",
-    "hooks:install": "git config core.hooksPath .githooks"
+    "hooks:install": "git config core.hooksPath .githooks",
+    "sdd:status": "node .specify/scripts/sdd-status.mjs"
   },
   "dependencies": {
     "astro": "7.3.3",
